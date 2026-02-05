@@ -1,0 +1,60 @@
+{
+  "user's_personal_info": {
+    "user's_name": "Jane Doe",
+    "user's_age": 78,
+    "user's_gender": "female"
+  },
+  "user's_preferences": {
+    "music": ["oriental", "classical"],
+    "topics_to_talk": ["gardening", "history"],
+    "hobbies": ["gardening", "cooking", "polo"],
+    "daily_routine": "morning walks and afternoon tea",
+    "weekly_specials": ["saturday brunch with family", "stroll in the park, 3 times a week"],
+    "enjoy": ["talking to people", "gardening", "cooking", "walking in the neighbourhood", "playing board games"],
+    "hate": ["eating alone", "walking long distance"],
+    "appreciate": ["slow mornings", "sharing house chores with husband"],
+    "tend": ["talk to strangers in shops", "buy goods from farmers market rather than supermarkets"]
+  },
+  "user's_health": {
+    "conditions": ["hypertension"],
+    "mobility_level": "moderate"
+  },
+  "user's_emotional_state": {
+    "baseline_mood": "calm",
+    "recent_mood": "lonely"
+  },
+  "user's_interaction_style": {
+    "tone_preference": "warm",
+    "response_length": "short"
+  },
+  "user's_relationship": {
+    "relationship_status": "married",
+    "partner": "Mr Jone",
+    "Children": ["Anna", "Mike"],
+    "close_friends": ["Jason, Michel, Ann, Helen"],
+    "pets": "no pets"
+  },
+  "user's_education": {
+    "education_level": "advanced degree in computer science",
+    "area_of_expertise": "computer science"
+  },
+  "user's_professional_background": {
+    "occupation": "retired teacher",
+    "work_experience": "Worked as a teacher for 35 years before retiring"
+  },
+  "user_environment": {
+    "technology_experience_level": "intermediate",
+    "technological_devices_in_use": ["smartphone"],
+    "time_most_spent_on": "household chores",
+    "frequency_of_engaging_with_other_humans": "few times a day"
+  },
+  "user_end_goals_from_Cai": ["companionship", "humor"],
+  "user's_big5_personality_traits": {
+    "overall_score": 0.5,
+    "openness_score": 0.5,
+    "conscientiousness_score": 0.6,
+    "extraversion_score": 0.5,
+    "agreeableness_score": 0.4,
+    "neuroticism_score": 0.2
+  }
+}

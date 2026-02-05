@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice Assistant Study</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+    button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 12px 24px;
+    }
+    #status {
+      font-size: 22px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Voice Assistant</h1>
+
+  <button onclick="pywebview.api.start()">Start</button>
+  <button onclick="pywebview.api.pause()">Pause/Resume</button>
+  <button onclick="pywebview.api.stop()">End</button>
+
+  <div id="status">Status: Idle</div>
+
+  <script>
+    function updateStatus(text) {
+      document.getElementById("status").innerText = "Status: " + text;
+    }
+  </script>
+
+</body>
+</html>

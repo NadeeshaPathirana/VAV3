@@ -1,0 +1,67 @@
+Personal Information about the user:
+- My name is Jane Doe.
+- I am 78 years old.
+- I am seventy-eight.
+- I am a female.
+- I am a woman
+- I live in Birmingham, United Kingdom
+
+Preferences of the user:
+- I enjoy oriental and classical music.
+- My preferred music genres are oriental and classical.
+- I like talking about gardening and history.
+- My favorite topics of conversation include gardening and history.
+- My hobbies include gardening, cooking, and playing polo.
+- I enjoy gardening and cooking in my free time.
+- My daily routine includes morning walks and afternoon tea.
+- Every week, I have a Saturday brunch with my family.
+- I take strolls in the park three times a week.
+- I enjoy talking to people, gardening, cooking, walking around her neighborhood, and playing board games.
+- I dislike eating alone and walking long distances.
+- I appreciate slow mornings.
+- I like sharing household chores with my husband.
+- I tend to talk to strangers in shops.
+- I prefer buying goods from farmers markets rather than supermarkets.
+
+Health of the user:
+- I have hypertension.
+- I live with hypertension but manages it.
+- My mobility level is moderate.
+
+Emotional State of the user:
+- My baseline mood is calm.
+- I am usually calm and steady.
+- Recently, I have been feeling lonely.
+- My recent emotional state can be described as loneliness.
+
+Interaction Style of the user:
+- I prefer a warm tone when interacting.
+- I like responses that are short and concise.
+
+Relationships of the user:
+- I am married.
+- I am married to Mr. Jone.
+- My husband is named Mr. Jone.
+- I have two children named Anna and Mike.
+- I am the mother of Anna and Mike.
+- My close friends include Jason, Michel, Ann, and Helen.
+- I do not have any pets.
+
+Education Qualifications of the user:
+- I have an advanced degree in computer science.
+- My area of expertise is computer science.
+
+Environment & Lifestyle of the user:
+- My technology experience level is intermediate.
+- I use a smartphone as her main technological device.
+- I spend most of her time on household chores.
+- I interact with other people a few times a day.
+
+Goals for the AI by the user:
+- I seek companionship from the AI.
+- I enjoy humor and wants the AI to be lighthearted and friendly.
+
+Professional Background of the user:
+- I am a retired teacher.
+- I worked as a teacher for 35 years before retiring.
+- My career spanned 35 years in teaching.

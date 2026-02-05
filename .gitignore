@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+faster-whisper-env/
+
+# PyCharm
+.idea/
+
+# OS junk
+.DS_Store
+
+chroma_db/
+.env

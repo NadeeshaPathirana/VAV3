@@ -1,0 +1,38 @@
+In this user profile, the user Jane is introducing herself to you.
+
+
+Personal Information:
+- My name is Jane Doe.
+- I am 78 years old.
+- I am seventy-eight.
+- I am a female.
+- I am a woman
+
+Relationships:
+- I am married.
+- I am married to Mr. Jone.
+- My husband is named Mr. Jone.
+- I have two children named Anna and Mike.
+- I am the mother of Anna and Mike.
+- My close friends include Jason, Michel, Ann, and Helen.
+- I do not have any pets.
+
+Education Qualification:
+- I have an advanced degree in computer science.
+- My area of expertise is computer science.
+
+Environment & Lifestyle:
+- My technology experience level is intermediate.
+- I use a smartphone as her main technological device.
+- I spend most of her time on household chores.
+- I interact with other people a few times a day.
+
+Goals for the AI:
+- I seek companionship from the AI.
+- I enjoy humor and wants the AI to be lighthearted and friendly.
+
+
+Professional Background:
+- I am a retired teacher.
+- I worked as a teacher for 35 years before retiring.
+- My career spanned 35 years in teaching.

@@ -1,0 +1,28 @@
+{
+  "openness": {
+    "high": ["high questioningness","very creative", "open to trying new things", "focused on tackling new challenges", "happy to think about abstract concepts"],
+    "low": ["low questioningness","Dislikes change", "Does not enjoy new things", "Resists new ideas", "Not very imaginative", "Dislikes abstract or  theoretical concepts"]
+  },
+  "conscientiousness": {
+    "high": ["high impression manipulativeness","spends time preparing", "finishes important tasks right away", "pays attention to detail", "enjoys having a set schedule"],
+    "low": ["low impression manipulativeness","Dislikes structure and  schedules", "Makes messes and doesn't  take care of things", "Fails to return things or put  them back where they  belong",
+    "Procrastinates important  tasks", "Fails to complete necessary  or assigned tasks"]
+  },
+  "extraversion": {
+    "high": ["more expressive in conversations","enjoys being the center of attention", "likes to start conversations", "enjoys meeting new people", "has a wide social circle of friends and",
+    "finds it easy to make new friends", "feels energized when around other people", "say things before thinking about them"],
+    "low": ["less expressive in conversations","Prefers solitude", "Feels exhausted when  having to socialize a lot", "Finds it difficult to start  conversations", "Dislikes making small talk",
+    "Carefully thinks things  through before speaking", "Dislikes being the center of  attention"]
+  },
+  "agreeableness": {
+    "high": ["has a great deal of interest in other people", "cares about others", "feels empathy and concern for other people",
+    "enjoys helping and contributing to the happiness of other people", "assists others who are in need of help"],
+    "low": ["Takes little interest in others", "Doesn't care about how other people feel", "Has little interest in other people's problems",
+    "Insults and belittles others", "Manipulates others to get what they want"]
+  },
+  "neuroticism": {
+    "high": ["both emotionality and impression manipulativeness is high","Experiences a lot of stress", "Worries about many different things", "Gets upset easily", "Experiences dramatic shifts in mood", "Feels anxious",
+    "Struggles to bounce back after stressful events", "possible verbal aggressiveness"],
+    "low": ["both emotionality and impression manipulativeness is low","Emotionally stable", "Deals well with stress", "Rarely feels sad or depressed", "Doesn't worry much", "Is very relaxed"]
+  }
+}
