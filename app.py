@@ -5,10 +5,8 @@ import numpy as np
 from faster_whisper import WhisperModel
 from scipy.io import wavfile
 import webview
-import sys
 
 from emotion_recognition.SpeechEmotionRecognizer import SpeechEmotionRecognizer
-# from emotion_recognition.SpeechEmotionRecognizerV2 import SpeechEmotionRecognizerV2
 
 from tts import speechify_voice_service as vs
 from rag.AIVA_Chroma_2 import AIVA_Chroma_2
@@ -94,7 +92,7 @@ def assistant_loop():
         # Intro
         update_ui_status("Speaking")
         response = ai_assistant.interact_with_llm(
-            "Introduce yourself and ask the user what they'd like to talk about.",
+            "Introduce yourself and ask the user how they are doing today. Then ask the user what they'd like to talk about.",
             "Neutral")
         print("Conversation Starter:", response)
 

@@ -6,7 +6,7 @@ import time
 from tts import google_voice_service as vsg
 
 client = Speechify(
-    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM5ODYzNTQsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.i6QenJDQwb4vZsnXWgwpDSLvgJuomRXwH_1E5cHvmG4",
+    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAzODk2NDAsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.9iZbq_FKMOMvJDecG8gdYu33uxqD10sLinBv6Pz8ws0",
 ) # token expires in 1h
 
 
@@ -53,7 +53,7 @@ def play_text_to_speech(text, emotion):
         play_obj.wait_done()
 
     except ApiError as e:
-        print(e.status_code)
+        print("API Error in TTS: ", e.status_code)
         print(e.body)
         vsg.play_text_to_speech(text)  # for google
 

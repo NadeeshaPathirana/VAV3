@@ -7,7 +7,7 @@ import time
 class SpeechEmotionRecognizer:
     def __init__(self):
         self.model_path = (
-            "C:/Users/220425722/Desktop/Python/Emotion Recognition/Repeat_Models/S3prl/Model_2/"
+            "C:/Users/220425722/Desktop/Python/Emotion Recognition/Repeat_Models/S3prl/Model_2.1/"
         )
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -16,6 +16,13 @@ class SpeechEmotionRecognizer:
             self.model_path,
             local_files_only=True
         ).to(self.device)
+        print(f"Model loaded: {self.model.__class__.__name__}")
+        print(f"Number of labels: {self.model.config.num_labels}")
+        print(f"Model device: {next(self.model.parameters()).device}")
+
+        # Verify the model has actual weights (not random initialization)
+        sample_weight = next(self.model.parameters())
+        print(f"Sample weight stats - mean: {sample_weight.mean():.4f}, std: {sample_weight.std():.4f}")
 
         self.model.eval()
 
@@ -23,6 +30,28 @@ class SpeechEmotionRecognizer:
             self.model_path,
             local_files_only=True
         )
+
+        print(f"Feature extractor sampling rate: {self.feature_extractor.sampling_rate}")
+        print(f"Feature extractor return_attention_mask: {self.feature_extractor.return_attention_mask}")
+
+        # Add this more comprehensive check:
+        print("\n=== MODEL WEIGHT ANALYSIS ===")
+        total_params = sum(p.numel() for p in self.model.parameters())
+        print(f"Total parameters: {total_params:,}")
+
+        # Check the classifier head specifically (most important for your task)
+        if hasattr(self.model, 'classifier'):
+            classifier_weight = self.model.classifier.weight
+            print(f"Classifier weight - mean: {classifier_weight.mean():.4f}, std: {classifier_weight.std():.4f}")
+            print(f"Classifier weight range: [{classifier_weight.min():.4f}, {classifier_weight.max():.4f}]")
+        else:
+            print("No classifier layer found - check model architecture")
+
+        # Check if any layer has suspiciously uniform values
+        for name, param in self.model.named_parameters():
+            if 'classifier' in name or 'head' in name:
+                print(
+                    f"{name}: mean={param.mean():.4f}, std={param.std():.4f}, range=[{param.min():.4f}, {param.max():.4f}]")
 
         # VERIFY THIS MATCHES TRAINING
         self.emotion_labels = {
@@ -33,11 +62,12 @@ class SpeechEmotionRecognizer:
         }
 
         # ~4 seconds (S3PRL-friendly)
-        self.max_length = 64000
+        self.max_length = 32000
 
         # Inference controls
-        self.temperature = 2.0
-        self.min_confidence = 0.45
+        self.temperature = 1.0
+        # self.min_confidence = 0.45
+        self.min_confidence = 0.30
 
     def predict_emotion(self, file_path):
         start_time = time.time()
@@ -62,6 +92,7 @@ class SpeechEmotionRecognizer:
 
         with torch.no_grad():
             logits = self.model(**inputs).logits
+            print(f"Raw logits: {logits.cpu().numpy()}")
 
             # Temperature scaling
             probs = torch.softmax(logits / self.temperature, dim=-1)
