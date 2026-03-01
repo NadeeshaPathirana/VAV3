@@ -23,17 +23,6 @@ Preferences of the user:
 - I tend to talk to strangers in shops.
 - I prefer buying goods from farmers markets rather than supermarkets.
 
-Health of the user:
-- I have hypertension.
-- I live with hypertension but manages it.
-- My mobility level is moderate.
-
-Emotional State of the user:
-- My baseline mood is calm.
-- I am usually calm and steady.
-- Recently, I have been feeling lonely.
-- My recent emotional state can be described as loneliness.
-
 Interaction Style of the user:
 - I prefer a warm tone when interacting.
 - I like responses that are short and concise.

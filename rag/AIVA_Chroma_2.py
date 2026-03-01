@@ -80,7 +80,7 @@ class AIVA_Chroma_2:
         self._memory = ChatMemoryBuffer.from_defaults(token_limit=1500)
         self._chat_engine = self._index.as_chat_engine(
             chat_mode="context",
-            # chat_mode="condense_plus_context", # todo: check if this is working better than "context"
+            # chat_mode="condense_plus_context", # todo: check if this is working better than "context" -> checked. get token limit exceed issue
             memory=self._memory,
             system_prompt=self._prompt,
             similarity_top_k=1
@@ -106,8 +106,11 @@ class AIVA_Chroma_2:
     def _create_kb(self):
         try:
             reader = SimpleDirectoryReader(
-                input_files=[r"C:\Users\220425722\Desktop\Python\VAV2\rag\profile\owner_file.txt",
-                             r"C:\Users\220425722\Desktop\Python\VAV2\rag\profile\owner_personality_file.txt",
+                input_files=[
+                            # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_file.txt",
+                             r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_personality_file.txt",
+                             r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
+                             # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV2\rag\profile\older_adults_general_behaviour.txt" #removed due to token limit
                              ]
             )
@@ -316,6 +319,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
             **Present & Daily Life:**
             - "What does a typical day look like for you?"
             - "What brings you joy these days?"
+            - "What are your hobbies?"
 
             **Past Experiences:**
             - "What was your first job like?"

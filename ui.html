@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Voice Assistant Study</title>
+    <title>Voice Assistant User Study</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       margin-top: 40px;
+      transition: background-color 0.3s ease;
     }
+
+    /* Green background when listening */
+    body.listening {
+      background-color: #90EE90;
+    }
+
     button {
       font-size: 18px;
       margin: 10px;
@@ -34,6 +41,13 @@
   <script>
     function updateStatus(text) {
       document.getElementById("status").innerText = "Status: " + text;
+
+      // Add green background when listening
+      if (text === "Cai is Listening") {
+        document.body.classList.add("listening");
+      } else {
+        document.body.classList.remove("listening");
+      }
     }
   </script>
 

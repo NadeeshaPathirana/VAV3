@@ -5,10 +5,13 @@ import numpy as np
 from faster_whisper import WhisperModel
 from scipy.io import wavfile
 import webview
+import re
+import random
 
 from emotion_recognition.SpeechEmotionRecognizer import SpeechEmotionRecognizer
 
 from tts import speechify_voice_service as vs
+# from tts import coqui_voice_service as vs
 from rag.AIVA_Chroma_2 import AIVA_Chroma_2
 ai_assistant = AIVA_Chroma_2()
 recognizer = SpeechEmotionRecognizer()
@@ -19,10 +22,11 @@ main_window = None
 assistant_state = {
     "running": False,
     "paused": False,
-    "status": "Idle"
+    "status": "Cai is Idle"
 }
 
 start_event = threading.Event()
+
 shutdown_event = threading.Event()
 
 DEFAULT_MODEL_SIZE = "small"  # set from medium to small to improve speed of the transcription
@@ -36,7 +40,7 @@ def update_ui_status(text):
     except Exception as e:
         print("JS update error:", e)
 
-def is_silence(data, threshold=200): # threshold = max amplitude
+def is_silence(data, threshold=500): # threshold = max amplitude
     """Check if audio data contains silence."""
     return np.max(np.abs(data)) < threshold
 def record_audio_chunk(stream, chunk_length=DEFAULT_CHUNK_LENGTH):
@@ -65,9 +69,53 @@ def detect_pause(start_time, pause_duration=0.5): # this will be checked after a
     """Check if silence has lasted long enough to trigger a stop."""
     return (time.time() - start_time) >= pause_duration
 
+def is_valid_response(text):
+    """Check if response is valid conversational text."""
+    text = text.strip()
+
+    # Math/equation patterns
+    invalid_patterns = [
+        r'\*\*\d+', r'[a-z]\([a-z]\)\s*=', r'=\s*-?\d+\*',
+        r'Give\s+[a-z]\(\d+\)', r'Solve\s+-?\d+', r'Question:\s*[A-Z]',
+        r'Q:\s*[A-Z]', r'\d+\s*[\+\-\*/]\s*\d+\s*=', r'Let\s+[a-z]\([a-z]\)'
+    ]
+
+    for pattern in invalid_patterns:
+        if re.search(pattern, text):
+            return False
+
+    if len(text) < 10 or len(text.split()) < 3:
+        return False
+
+    return True
+
+
+def clean_response(text, context="general"):
+    """Filter and clean response, provide fallback if needed."""
+    if is_valid_response(text):
+        return text
+
+    print(f"\n⚠️ FILTERED INVALID RESPONSE: {text[:100]}...")
+
+    if context == "intro":
+        return "Hello! I'm Cai, and I'm here to chat with you. How are you feeling today?"
+
+    # Gentle, warm fallbacks for elderly users
+    fallbacks = [
+        "I'm so sorry, dear. I didn't catch that. Could you tell me again?",
+        "Pardon me, I missed what you said. Would you mind repeating it?",
+
+        "Oh, I'm sorry - I didn't hear you clearly. What did you say?",
+        "Forgive me, I didn't quite catch that. Could you say it once more?",
+        "I apologize, I lost track of what you were saying. Could you repeat that?",
+        "I'm sorry, I had a moment there. What were you telling me?",
+    ]
+
+    return random.choice(fallbacks)
+
 def assistant_loop():
     print("Assistant thread ready, waiting for Start")
-    update_ui_status("Idle")
+    update_ui_status("Cai is Idle")
 
     while not shutdown_event.is_set():
         start_event.wait()  # ⬅️ waits for Start
@@ -90,11 +138,12 @@ def assistant_loop():
         )
 
         # Intro
-        update_ui_status("Speaking")
+        update_ui_status("Cai is Speaking")
         response = ai_assistant.interact_with_llm(
             "Introduce yourself and ask the user how they are doing today. Then ask the user what they'd like to talk about.",
             "Neutral")
         print("Conversation Starter:", response)
+        response = clean_response(response, context="intro")
 
         stream.stop_stream()
         vs.play_text_to_speech(response, "Neutral")
@@ -104,11 +153,11 @@ def assistant_loop():
         while assistant_state["running"] and not shutdown_event.is_set():
 
             if assistant_state["paused"]:
-                update_ui_status("Paused")
+                update_ui_status("Cai is Paused")
                 time.sleep(0.1)
                 continue
 
-            update_ui_status("Listening")
+            update_ui_status("Cai is Listening")
 
             audio_chunks = []
             silence_start = None
@@ -134,7 +183,7 @@ def assistant_loop():
             full_audio = np.concatenate(audio_chunks)
             wavfile.write("full_audio.wav", 16000, full_audio)
 
-            update_ui_status("Thinking")
+            update_ui_status("Cai is Thinking")
 
             emotion = recognizer.predict_emotion("full_audio.wav")
             print(f"Predicted Emotion: {emotion}")
@@ -146,8 +195,10 @@ def assistant_loop():
             if not transcription.strip():
                 continue
 
-            update_ui_status("Speaking")
+            update_ui_status("Cai is Speaking")
             response = ai_assistant.interact_with_llm(transcription, emotion)
+            response = clean_response(response, context="conversation")
+
             print("CAI: ", response)
             stream.stop_stream()
             vs.play_text_to_speech(response, "Neutral")
@@ -159,7 +210,7 @@ def assistant_loop():
         audio.terminate()
 
         start_event.clear()
-        update_ui_status("Idle")
+        update_ui_status("Cai is Idle")
 
     print("Assistant thread exiting")
 
@@ -170,11 +221,11 @@ class UIApi:
             assistant_state["running"] = True
             assistant_state["paused"] = False
             start_event.set()
-            update_ui_status("Starting")
+            update_ui_status("Cai is Starting")
 
     def pause(self):
         assistant_state["paused"] = not assistant_state["paused"]
-        update_ui_status("Paused" if assistant_state["paused"] else "Listening")
+        update_ui_status("Cai is Paused" if assistant_state["paused"] else "Cai is Listening")
 
     def stop(self):
         print("UI → Stop")
@@ -183,7 +234,7 @@ class UIApi:
         assistant_state["running"] = False
         assistant_state["paused"] = False
 
-        update_ui_status("Stopping")
+        update_ui_status("Cai is Stopping")
 
         # Close the window safely
         if main_window is not None:
@@ -194,7 +245,7 @@ if __name__ == "__main__":
     threading.Thread(target=assistant_loop, daemon=True).start()
 
     main_window = webview.create_window(
-        "Voice Assistant Study",
+        "Voice Assistant User Study",
         "ui.html",
         js_api=UIApi(),
         width=480,
