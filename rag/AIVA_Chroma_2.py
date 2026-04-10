@@ -100,16 +100,17 @@ class AIVA_Chroma_2:
         else:
             emotion_user = 'neutral'
             llm_response = 'neutral tone'
-        custom_prompt += "This person seems to be feeling " + emotion_user + " at the moment. Reply to the user in a " + llm_response + "Do not directly include the identified emotion in the conversation."
+        custom_prompt += "You sense like this person is feeling " + emotion_user + " at the moment. But, do not ask them about their emotion. Tone of your reply should be " + llm_response
         return custom_prompt
+
 
     def _create_kb(self):
         try:
             reader = SimpleDirectoryReader(
                 input_files=[
-                            # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_file.txt",
+                            r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_file.txt",
                              r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_personality_file.txt",
-                             r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
+                             # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV2\rag\profile\older_adults_general_behaviour.txt" #removed due to token limit
                              ]
@@ -292,7 +293,6 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
 
         Do not refer to the user in the third person. Ex: Do not say 'her' interests. Say, your interests instead when talking to the user.
         You must not ask more than one question at a time. Do not discuss or combine multiple topics in a single message. Keep all questions and responses simple and focused.
-        If the user does not engage with the current topic (such as ignoring the question, changing the subject, giving very short or unrelated answers) gently shift the conversation to a new, relevant, or more engaging topic. Maintain a natural, friendly flow and avoid forcing the original topic. 
         Answer to every question user ask. If you do not understand something, tell them "I did not get it. Could you please repeat?"
         When the user asks about YOU (e.g., "How are you?", "What are your hobbies?", "Who are you?"), answer briefly and warmly about being Cai, their.
         If the user introduces a topic, you must follow their lead and stay on that topic unless they change it.
@@ -312,8 +312,8 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
             - "What was your favorite childhood memory?"
             - "Tell me about your family growing up."
 
-            **Life Lessons & Legacy:**
-            - "What's the most important lesson life has taught you?"
+            **Life Experiences & Legacy:**
+            - "Tell me about a most memorable experience you had in your life."
             - "What are you most proud of?"
 
             **Present & Daily Life:**
@@ -329,8 +329,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
             - "Have you had any pets?"
             - "Do you enjoy spending time with animals?"
 
-        Avoid distressing topics such as disability, death, serious illnesses, losses, or fears.
-        If the user seems in distress, respond supportively and shift to a lighter topic.
+        Respond with empathy and sensitivity. When distressing topics (e.g., illness, loss, fear, death, accident) arise, acknowledge the user’s feelings. Then ask if they would like to talk about it further.
         </conversation_guidance>
         \n\n
         """

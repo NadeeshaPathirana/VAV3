@@ -40,7 +40,7 @@ def update_ui_status(text):
     except Exception as e:
         print("JS update error:", e)
 
-def is_silence(data, threshold=500): # threshold = max amplitude
+def is_silence(data, threshold=200): # threshold = max amplitude
     """Check if audio data contains silence."""
     return np.max(np.abs(data)) < threshold
 def record_audio_chunk(stream, chunk_length=DEFAULT_CHUNK_LENGTH):
@@ -90,7 +90,27 @@ def is_valid_response(text):
     return True
 
 
+def clean_prefix_response(text):
+    """Remove unwanted prefixes from LLM responses."""
+    text = text.strip()
+
+    # Remove common prefixes
+    prefixes_to_remove = [
+        "Cai:",
+        "CAI:",
+        "Assistant:",
+        "AI:",
+    ]
+
+    for prefix in prefixes_to_remove:
+        if text.startswith(prefix):
+            text = text[len(prefix):].strip()
+            break
+
+    return text
+
 def clean_response(text, context="general"):
+    text = clean_prefix_response(text)
     """Filter and clean response, provide fallback if needed."""
     if is_valid_response(text):
         return text
@@ -140,7 +160,7 @@ def assistant_loop():
         # Intro
         update_ui_status("Cai is Speaking")
         response = ai_assistant.interact_with_llm(
-            "Introduce yourself and ask the user how they are doing today. Then ask the user what they'd like to talk about.",
+            "Introduce yourself and ask the user how they are doing today.",
             "Neutral")
         print("Conversation Starter:", response)
         response = clean_response(response, context="intro")
@@ -188,7 +208,8 @@ def assistant_loop():
             emotion = recognizer.predict_emotion("full_audio.wav")
             print(f"Predicted Emotion: {emotion}")
 
-            segments, _ = model.transcribe("full_audio.wav", beam_size=3)
+            segments, _ = model.transcribe("full_audio.wav", beam_size=3, vad_filter=True)
+            # segments, _ = model.transcribe("full_audio.wav", beam_size=3)
             transcription = " ".join(s.text for s in segments)
             print("User: ", transcription)
 
