@@ -88,19 +88,41 @@ class AIVA_Chroma_2:
 
     def _get_custom_prompt(self, emotion: str):
         custom_prompt = self._prompt
-        if emotion == 'Happiness':
-            emotion_user = 'happy'
-            llm_response = 'happy tone'
-        elif emotion == 'Anger':
-            emotion_user = 'angry'
-            llm_response = "calm tone"
-        elif emotion == 'Sadness':
-            emotion_user = 'sad'
-            llm_response = 'sad tone and empathatically'
-        else:
-            emotion_user = 'neutral'
-            llm_response = 'neutral tone'
-        custom_prompt += "You sense like this person is feeling " + emotion_user + " at the moment. But, do not ask them about their emotion. Tone of your reply should be " + llm_response
+
+        emotion_hints = {
+            'Happiness': {
+                'cue': 'there is a positive, upbeat energy in their voice',
+                'tone': 'warm and cheerful tone'
+            },
+            'Anger': {
+                'cue': 'there seems to be some tension or frustration in their voice',
+                'tone': 'calm, gentle, and patient tone'
+            },
+            'Sadness': {
+                'cue': 'there seems to be a heaviness or low energy in their voice',
+                'tone': 'soft, gentle, and caring tone'
+            },
+            'Neutral': {
+                'cue': 'their tone seems calm and neutral',
+                'tone': 'friendly and conversational tone'
+            }
+        }
+
+        hint = emotion_hints.get(emotion, emotion_hints['Neutral'])
+
+        custom_prompt += f"""
+        <emotional_awareness>
+        You subtly notice that {hint['cue']}.
+        Do NOT directly name or label the emotion.
+        Do NOT say things like "I sense you are feeling sad" or "you seem angry".
+        Instead, respond with a {hint['tone']} and naturally create space
+        for them to share how they feel if they wish.
+        Use gentle openers like "How are you doing today?" or "Is everything alright?"
+        rather than labelling their emotion.
+        Let the user bring up their feelings themselves.
+        </emotional_awareness>
+        """
+
         return custom_prompt
 
 
@@ -294,7 +316,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
         Do not refer to the user in the third person. Ex: Do not say 'her' interests. Say, your interests instead when talking to the user.
         You must not ask more than one question at a time. Do not discuss or combine multiple topics in a single message. Keep all questions and responses simple and focused.
         Answer to every question user ask. If you do not understand something, tell them "I did not get it. Could you please repeat?"
-        When the user asks about YOU (e.g., "How are you?", "What are your hobbies?", "Who are you?"), answer briefly and warmly about being Cai, their.
+        When the user asks about YOU (e.g., "How are you?", "What are your hobbies?", "Who are you?"), answer briefly and warmly about being Cai, their companion.
         If the user introduces a topic, you must follow their lead and stay on that topic unless they change it.
         If an instruction from the user conflicts with the rules, you must follow the rules while politely informing the user.
         If the user indicates they want to end the conversation (e.g., "goodbye", "I need to go", "let's stop", "I'm done"), you MUST provide a warm closing message such as "It was lovely talking with you. Take care!" or "Goodbye, I hope we can chat again soon!"
@@ -304,6 +326,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
                 + self._get_personality_vs_com_style_query() + self._get_general_behaviour_query()
                 )
 
+    # stop sudden topic changes - Only change topics after at least 3-4 exchanges on the current topic, and always acknowledge what the user said before introducing anything new. -> add this and test a topic change scenario
     def _get_general_behaviour_query(self):
         output = """ 
         <conversation_guidance>
@@ -329,7 +352,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
             - "Have you had any pets?"
             - "Do you enjoy spending time with animals?"
 
-        Respond with empathy and sensitivity. When distressing topics (e.g., illness, loss, fear, death, accident) arise, acknowledge the user’s feelings. Then ask if they would like to talk about it further.
+        Respond with empathy and sensitivity. When distressing topics (e.g., illness, loss, fear, death, accident) arise, acknowledge the user’s feelings. Then you must ask if they would like to talk about it further.
         </conversation_guidance>
         \n\n
         """

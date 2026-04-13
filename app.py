@@ -9,6 +9,7 @@ import re
 import random
 
 from emotion_recognition.SpeechEmotionRecognizer import SpeechEmotionRecognizer
+from conversation_logger import conv_logger, listener
 
 from tts import speechify_voice_service as vs
 # from tts import coqui_voice_service as vs
@@ -201,6 +202,12 @@ def assistant_loop():
                 continue
 
             full_audio = np.concatenate(audio_chunks)
+
+            duration = len(full_audio) / 16000  # Duration in seconds
+            if duration < 1.0:  # Less than 1 second
+                print(f"⚠️ Audio too short ({duration:.2f}s), skipping transcription")
+                continue
+
             wavfile.write("full_audio.wav", 16000, full_audio)
 
             update_ui_status("Cai is Thinking")
@@ -212,6 +219,8 @@ def assistant_loop():
             # segments, _ = model.transcribe("full_audio.wav", beam_size=3)
             transcription = " ".join(s.text for s in segments)
             print("User: ", transcription)
+            conv_logger.info(f"USER     | {transcription}")
+            conv_logger.info(f"EMOTION  | {emotion}")
 
             if not transcription.strip():
                 continue
@@ -221,6 +230,7 @@ def assistant_loop():
             response = clean_response(response, context="conversation")
 
             print("CAI: ", response)
+            conv_logger.info(f"CAI    | {response}")
             stream.stop_stream()
             vs.play_text_to_speech(response, "Neutral")
             stream.start_stream()
@@ -256,6 +266,7 @@ class UIApi:
         assistant_state["paused"] = False
 
         update_ui_status("Cai is Stopping")
+        listener.stop()
 
         # Close the window safely
         if main_window is not None:
