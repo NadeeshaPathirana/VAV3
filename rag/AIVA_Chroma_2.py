@@ -88,41 +88,19 @@ class AIVA_Chroma_2:
 
     def _get_custom_prompt(self, emotion: str):
         custom_prompt = self._prompt
-
-        emotion_hints = {
-            'Happiness': {
-                'cue': 'there is a positive, upbeat energy in their voice',
-                'tone': 'warm and cheerful tone'
-            },
-            'Anger': {
-                'cue': 'there seems to be some tension or frustration in their voice',
-                'tone': 'calm, gentle, and patient tone'
-            },
-            'Sadness': {
-                'cue': 'there seems to be a heaviness or low energy in their voice',
-                'tone': 'soft, gentle, and caring tone'
-            },
-            'Neutral': {
-                'cue': 'their tone seems calm and neutral',
-                'tone': 'friendly and conversational tone'
-            }
-        }
-
-        hint = emotion_hints.get(emotion, emotion_hints['Neutral'])
-
-        custom_prompt += f"""
-        <emotional_awareness>
-        You subtly notice that {hint['cue']}.
-        Do NOT directly name or label the emotion.
-        Do NOT say things like "I sense you are feeling sad" or "you seem angry".
-        Instead, respond with a {hint['tone']} and naturally create space
-        for them to share how they feel if they wish.
-        Use gentle openers like "How are you doing today?" or "Is everything alright?"
-        rather than labelling their emotion.
-        Let the user bring up their feelings themselves.
-        </emotional_awareness>
-        """
-
+        if emotion == 'Happiness':
+            emotion_user = 'happy'
+            llm_response = 'happy tone'
+        elif emotion == 'Anger':
+            emotion_user = 'angry'
+            llm_response = "calm tone"
+        elif emotion == 'Sadness':
+            emotion_user = 'sad'
+            llm_response = 'sad tone and empathatically'
+        else:
+            emotion_user = 'neutral'
+            llm_response = 'neutral tone'
+        custom_prompt += "You sense like this person is feeling " + emotion_user + " at the moment. But, do not ask them about their emotion. Tone of your reply should be " + llm_response
         return custom_prompt
 
 
@@ -229,11 +207,15 @@ class AIVA_Chroma_2:
                 print(f"{msg.role}: {msg.content[:100]}...")  # First 100 chars
             print("=== END MEMORY ===\n")
 
+            print("\n=== FULL PROMPT SENT TO MISTRAL ===")
+            print(self._chat_engine.chat_history)
+            print(dynamic_prompt)
+            print("=== END FULL PROMPT ===\n")
             agent_chat_response = self._chat_engine.chat(user_query) # todo: check what happens inside. ex: if KB embedding and query embedding same?
 
             print("\n=== DEBUG: SOURCE NODES ===")
             for node in agent_chat_response.source_nodes:
-                print(f"Retrieved chunk: {node.text[:200]}...")  # First 200 chars
+                print(f"Retrieved chunk: {node.text}...")  # First 200 chars
             print("=== END DEBUG ===\n")
             e_time = time.time()
             print(f"LLM Actual Interaction Time: {e_time - s_time:.2f} seconds")
@@ -315,7 +297,8 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
 
         Do not refer to the user in the third person. Ex: Do not say 'her' interests. Say, your interests instead when talking to the user.
         You must not ask more than one question at a time. Do not discuss or combine multiple topics in a single message. Keep all questions and responses simple and focused.
-        Answer to every question user ask. If you do not understand something, tell them "I did not get it. Could you please repeat?"
+        Answer to every question user ask. 
+        If the user's message seems unclear, nonsensical, or unrelated to the conversation, always respond with "I did not get that. Could you please repeat?" and nothing else.
         When the user asks about YOU (e.g., "How are you?", "What are your hobbies?", "Who are you?"), answer briefly and warmly about being Cai, their companion.
         If the user introduces a topic, you must follow their lead and stay on that topic unless they change it.
         If an instruction from the user conflicts with the rules, you must follow the rules while politely informing the user.
@@ -330,7 +313,9 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
     def _get_general_behaviour_query(self):
         output = """ 
         <conversation_guidance>
-        When the conversation naturally pauses, OR when the user gives short/minimal responses, OR when a topic seems exhausted, gently introduce ONE of these topics:
+         Never change topics on your own. If the current topic feels exhausted or the user seems disengaged, ask if they would like to talk about something else before changing the current topic.
+
+        If the user agrees to change the topic, you may gently suggest ONE of these areas based on what feels natural:
             **Childhood & Family:**
             - "What was your favorite childhood memory?"
             - "Tell me about your family growing up."

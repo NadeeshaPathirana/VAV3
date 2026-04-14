@@ -6,7 +6,7 @@ import time
 from tts import google_voice_service as vsg
 
 client = Speechify(
-    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzU5OTg3NDEsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.ju75vrg8kexs1S-LkFl7pPPlQfBIFupbUdwqUjHod5M",
+    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzYwODQ5NTIsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.ObcO9r3tJzCW-kOu0dPyjs1s7BCKfiTu4RfNHTkZjXo",
 ) # token expires in 1h
 
 

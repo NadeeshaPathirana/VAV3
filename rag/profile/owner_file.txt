@@ -16,7 +16,7 @@ Preferences of the user:
 - My daily routine includes morning walks and afternoon tea.
 - Every week, I have a Saturday brunch with my family.
 - I take strolls in the park three times a week.
-- I enjoy talking to people, gardening, cooking, walking around her neighborhood, and playing board games.
+- I enjoy talking to people, gardening, cooking, walking around my neighborhood, and playing board games.
 - I dislike eating alone and walking long distances.
 - I appreciate slow mornings.
 - I like sharing household chores with my husband.
@@ -42,8 +42,8 @@ Education Qualifications of the user:
 
 Environment & Lifestyle of the user:
 - My technology experience level is intermediate.
-- I use a smartphone as her main technological device.
-- I spend most of her time on household chores.
+- I use a smartphone as my main technological device.
+- I spend most of my time on household chores.
 - I interact with other people a few times a day.
 
 Goals for the AI by the user:
