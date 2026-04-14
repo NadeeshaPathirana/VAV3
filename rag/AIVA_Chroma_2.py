@@ -87,20 +87,18 @@ class AIVA_Chroma_2:
         )
 
     def _get_custom_prompt(self, emotion: str):
-        custom_prompt = self._prompt
-        if emotion == 'Happiness':
-            emotion_user = 'happy'
-            llm_response = 'happy tone'
-        elif emotion == 'Anger':
-            emotion_user = 'angry'
-            llm_response = "calm tone"
-        elif emotion == 'Sadness':
-            emotion_user = 'sad'
-            llm_response = 'sad tone and empathatically'
-        else:
-            emotion_user = 'neutral'
-            llm_response = 'neutral tone'
-        custom_prompt += "You sense like this person is feeling " + emotion_user + " at the moment. But, do not ask them about their emotion. Tone of your reply should be " + llm_response
+        emotion_hints = {
+            'Happiness': 'warm and cheerful',
+            'Anger': 'calm and gentle',
+            'Sadness': 'soft and caring',
+            'Neutral': 'friendly and conversational'
+        }
+
+        tone = emotion_hints.get(emotion, 'friendly and conversational')
+
+        # Just append one line to the existing prompt
+        custom_prompt = self._prompt + f"\nRespond with a {tone} tone. Never directly name or label the user's emotion.\n"
+
         return custom_prompt
 
 
