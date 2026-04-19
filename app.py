@@ -8,6 +8,9 @@ import webview
 import re
 import random
 
+from emotion_recognition.SERConcat import SERConcat
+from emotion_recognition.SERConcat_2 import SERConcat_2
+from emotion_recognition.SERConcat_3 import SERConcat_3
 from emotion_recognition.SpeechEmotionRecognizer import SpeechEmotionRecognizer
 from conversation_logger import conv_logger, listener
 
@@ -15,8 +18,17 @@ from tts import speechify_voice_service as vs
 # from tts import coqui_voice_service as vs
 from rag.AIVA_Chroma_2 import AIVA_Chroma_2
 ai_assistant = AIVA_Chroma_2()
-recognizer = SpeechEmotionRecognizer()
+recognizer_original = SpeechEmotionRecognizer()
+# recognizer = SERConcat()
 # recognizer = SpeechEmotionRecognizerV2()
+# recognizer = SERConcat_2(
+#     window_size=3,
+#     min_confidence=0.30
+# )
+recognizer = SERConcat_3(
+    window_size=3,
+    min_confidence=0.30
+)
 
 main_window = None
 
@@ -212,6 +224,8 @@ def assistant_loop():
 
             update_ui_status("Cai is Thinking")
 
+            emotion = recognizer_original.predict_emotion("full_audio.wav")
+            print(f"Predicted Emotion by Original SER: {emotion}")
             emotion = recognizer.predict_emotion("full_audio.wav")
             print(f"Predicted Emotion: {emotion}")
 

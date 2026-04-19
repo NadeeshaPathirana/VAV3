@@ -96,7 +96,7 @@ class AIVA_Chroma_2:
 
         tone = emotion_hints.get(emotion, 'friendly and conversational')
 
-        # Just append one line to the existing prompt
+        # This way, the LLM does not know which emotion is actually identified. Downside: if they ask "Do you know how I feel now?", LLM won't be able to answer.
         custom_prompt = self._prompt + f"\nRespond with a {tone} tone. Never directly name or label the user's emotion.\n"
 
         return custom_prompt
@@ -200,21 +200,21 @@ class AIVA_Chroma_2:
             # agent_chat_response = self._chat_engine.chat("The user, Jane said: '" + user_query + "'. Reply to this appropriately") # todo: make this Jane said and pass user name in variable. If this is working, add the emotion here itself instead of the dynamic prompt
             # agent_chat_response = self._chat_engine.chat("The user Jane said '" + user_query + "'.")
 
-            print("\n=== MEMORY CONTENT ===")
-            for msg in self._memory.get_all():
-                print(f"{msg.role}: {msg.content[:100]}...")  # First 100 chars
-            print("=== END MEMORY ===\n")
+            # print("\n=== MEMORY CONTENT ===")
+            # for msg in self._memory.get_all():
+            #     print(f"{msg.role}: {msg.content[:100]}...")  # First 100 chars
+            # print("=== END MEMORY ===\n")
 
-            print("\n=== FULL PROMPT SENT TO MISTRAL ===")
-            print(self._chat_engine.chat_history)
-            print(dynamic_prompt)
-            print("=== END FULL PROMPT ===\n")
+            # print("\n=== FULL PROMPT SENT TO MISTRAL ===")
+            # print(self._chat_engine.chat_history)
+            # print(dynamic_prompt)
+            # print("=== END FULL PROMPT ===\n")
             agent_chat_response = self._chat_engine.chat(user_query) # todo: check what happens inside. ex: if KB embedding and query embedding same?
 
-            print("\n=== DEBUG: SOURCE NODES ===")
-            for node in agent_chat_response.source_nodes:
-                print(f"Retrieved chunk: {node.text}...")  # First 200 chars
-            print("=== END DEBUG ===\n")
+            # print("\n=== DEBUG: SOURCE NODES ===")
+            # for node in agent_chat_response.source_nodes:
+            #     print(f"Retrieved chunk: {node.text}...")  # First 200 chars
+            # print("=== END DEBUG ===\n")
             e_time = time.time()
             print(f"LLM Actual Interaction Time: {e_time - s_time:.2f} seconds")
             answer = agent_chat_response.response
@@ -313,29 +313,10 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
         <conversation_guidance>
          Never change topics on your own. If the current topic feels exhausted or the user seems disengaged, ask if they would like to talk about something else before changing the current topic.
 
-        If the user agrees to change the topic, you may gently suggest ONE of these areas based on what feels natural:
-            **Childhood & Family:**
-            - "What was your favorite childhood memory?"
-            - "Tell me about your family growing up."
-
-            **Life Experiences & Legacy:**
-            - "Tell me about a most memorable experience you had in your life."
-            - "What are you most proud of?"
-
-            **Present & Daily Life:**
-            - "What does a typical day look like for you?"
-            - "What brings you joy these days?"
-            - "What are your hobbies?"
-
-            **Past Experiences:**
-            - "What was your first job like?"
-            - "What's a memorable trip you've taken?"
-
-            **Pets & Animals:**
-            - "Have you had any pets?"
-            - "Do you enjoy spending time with animals?"
-
-        Respond with empathy and sensitivity. When distressing topics (e.g., illness, loss, fear, death, accident) arise, acknowledge the user’s feelings. Then you must ask if they would like to talk about it further.
+        If the user agrees to change the topic, you may gently suggest ONE of these areas based on what feels natural: childhood memories, 
+        family, life experiences, daily routines, hobbies, travel, first job, or pets. 
+        Never suggest distressing topics like illness, loss, fear, death, accident, diseases. If user suggest such a topic, respond with empathy and sensitivity. 
+        When the user expresses any negative feeling, frustration, loneliness, or sense of not being heard or understood, always acknowledge their feelings warmly before anything else. Never change topic or suggest activities when the user seems emotionally unsettled.
         </conversation_guidance>
         \n\n
         """
