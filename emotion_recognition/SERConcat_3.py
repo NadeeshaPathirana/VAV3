@@ -15,7 +15,7 @@ class SERConcat_3:
         max_length=32000,
         temperature=1.0,
         min_confidence=0.30,
-        window_size=3,
+        window_size=3, # TODO: find some research to back this up
         use_normalization=True,
     ):
         self.model_path = ("C:/Users/220425722/Desktop/Python/Emotion Recognition/Repeat_Models/S3prl/Model_2.1/")
@@ -71,7 +71,7 @@ class SERConcat_3:
 
         buffer_list = list(self.prob_buffer)  # oldest first, newest last
 
-        # Assign weights: 1, 2, 3, ... so the last (most recent) has the highest weight
+        # Assign weights: 1, 2, 3, ... so the last (most recent) has the highest weight -> TODO: find some research to back this up
         weights = np.arange(1.0, len(buffer_list) + 1)
 
         # Weighted average: sum(weight * prob_vector) / sum(weights)
@@ -119,13 +119,13 @@ class SERConcat_3:
 
         self.prob_buffer.append(probs_np)
 
-        smoothed_probs = self._smooth_probs()
+        smoothed_probs = self._smooth_probs() # probability distribution over the 4 emotion classes
         if smoothed_probs is None:
             self.current_emotion = raw_label
             self.current_confidence = raw_confidence
         else:
             best_idx = int(np.argmax(smoothed_probs))
-            best_confidence = float(smoothed_probs[best_idx])
+            best_confidence = float(smoothed_probs[best_idx]) # taking the largest probability as a “confidence” ( “confidence” in the chosen class)
 
             if best_confidence < self.min_confidence:
                 self.current_emotion = "Neutral"

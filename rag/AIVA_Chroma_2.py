@@ -97,7 +97,14 @@ class AIVA_Chroma_2:
         tone = emotion_hints.get(emotion, 'friendly and conversational')
 
         # This way, the LLM does not know which emotion is actually identified. Downside: if they ask "Do you know how I feel now?", LLM won't be able to answer.
-        custom_prompt = self._prompt + f"\nRespond with a {tone} tone. Never directly name or label the user's emotion.\n"
+        custom_prompt = self._prompt + f"\nYou sense like this person is feeling {emotion} .\n"
+        custom_prompt = self._prompt + (f"\nRespond with a {tone} tone. \n"
+                                        f" - Never directly name or label the user's emotion.\n"
+                                        f" - Never say things like 'you are sad', 'you seem angry', or 'I can tell "
+                                        f"how you feel'. \n"
+                                        f" -  Only talk about emotions if the user clearly names their own feelings. \n"
+                                        f" - Always respond to the user's latest sentence before using any remembered "
+                                        f"information or profile details. \n")
 
         return custom_prompt
 
@@ -316,7 +323,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
         If the user agrees to change the topic, you may gently suggest ONE of these areas based on what feels natural: childhood memories, 
         family, life experiences, daily routines, hobbies, travel, first job, or pets. 
         Never suggest distressing topics like illness, loss, fear, death, accident, diseases. If user suggest such a topic, respond with empathy and sensitivity. 
-        When the user expresses any negative feeling, frustration, loneliness, or sense of not being heard or understood, always acknowledge their feelings warmly before anything else. Never change topic or suggest activities when the user seems emotionally unsettled.
+        When the user expresses any negative feeling, frustration, loneliness, or sense of not being heard or understood, always acknowledge their feelings warmly before anything else. Never suggest changing topics or suggest activities when the user seems emotionally unsettled.
         </conversation_guidance>
         \n\n
         """

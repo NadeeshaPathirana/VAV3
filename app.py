@@ -11,6 +11,7 @@ import random
 from emotion_recognition.SERConcat import SERConcat
 from emotion_recognition.SERConcat_2 import SERConcat_2
 from emotion_recognition.SERConcat_3 import SERConcat_3
+from emotion_recognition.SERConcat_4 import SERConcat_4
 from emotion_recognition.SpeechEmotionRecognizer import SpeechEmotionRecognizer
 from conversation_logger import conv_logger, listener
 
@@ -25,9 +26,13 @@ recognizer_original = SpeechEmotionRecognizer()
 #     window_size=3,
 #     min_confidence=0.30
 # )
-recognizer = SERConcat_3(
-    window_size=3,
-    min_confidence=0.30
+# recognizer = SERConcat_3(
+#     window_size=3,
+#     min_confidence=0.30
+# )
+recognizer = SERConcat_4(
+    ema_alpha=0.8,          # controls smoothing
+    min_confidence=0.30,   # same idea as before
 )
 
 main_window = None
@@ -177,6 +182,7 @@ def assistant_loop():
             "Neutral")
         print("Conversation Starter:", response)
         response = clean_response(response, context="intro")
+        conv_logger.info(f"CAI    | {response}")
 
         stream.stop_stream()
         vs.play_text_to_speech(response, "Neutral")

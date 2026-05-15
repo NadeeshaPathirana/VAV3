@@ -6,7 +6,7 @@ import time
 from tts import google_voice_service as vsg
 
 client = Speechify(
-    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzYwODQ5NTIsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.ObcO9r3tJzCW-kOu0dPyjs1s7BCKfiTu4RfNHTkZjXo",
+    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzY4NzIwMzIsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.GqZQWMfgs1Hhj3ld1ugdE5wOdRg7y_mqpi3UX0W6_b4",
 ) # token expires in 1h
 
 
@@ -35,7 +35,7 @@ def play_text_to_speech(text, emotion):
             input=inp,
             voice_id="beverly",
             model="simba-english",
-            # emotion='sad',
+            # emotion='sad', not working
         )
 
         audio_bytes = base64.b64decode(response.audio_data)
