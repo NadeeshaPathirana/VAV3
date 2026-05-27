@@ -3,53 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <title>Voice Assistant User Study</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 40px;
-      transition: background-color 0.3s ease;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Green background when listening */
-    body.listening {
-      background-color: #90EE90;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f0f2f5;  /* Soft neutral gray - default */
+            transition: background 0.5s ease;
+        }
 
-    button {
-      font-size: 18px;
-      margin: 10px;
-      padding: 12px 24px;
-    }
-    #status {
-      font-size: 22px;
-      margin-top: 30px;
-      font-weight: bold;
-    }
-  </style>
+        /* Green background ONLY when listening */
+        body.listening {
+            background: #a5d6a7;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 50px 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-start {
+            background: #4a5568;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background: #2d3748;
+        }
+
+        .btn-pause {
+            background: #718096;
+            color: white;
+        }
+
+        .btn-pause:hover {
+            background: #4a5568;
+        }
+
+        .btn-end {
+            background: #a0aec0;
+            color: white;
+        }
+
+        .btn-end:hover {
+            background: #718096;
+        }
+
+        #status {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            margin-top: 10px;
+        }
+
+        /* Pulsing animation for listening state */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        body.listening .container {
+            animation: pulse 2s infinite;
+        }
+
+        /* Status icon */
+        .status-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        /* Rotate animation for thinking */
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .thinking-icon {
+            animation: rotate 2s linear infinite;
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Voice Assistant</h1>
+<div class="container">
+    <h1>🎙️ Voice Assistant</h1>
 
-  <button onclick="pywebview.api.start()">Start</button>
-  <button onclick="pywebview.api.pause()">Pause/Resume</button>
-  <button onclick="pywebview.api.stop()">End</button>
+    <div class="status-icon" id="statusIcon">💤</div>
 
-  <div id="status">Status: Idle</div>
+    <div class="button-group">
+        <button class="btn-start" onclick="pywebview.api.start()">▶ Start</button>
+        <button class="btn-pause" onclick="pywebview.api.pause()">⏸ Pause/Resume</button>
+        <button class="btn-end" onclick="pywebview.api.stop()">⏹ End</button>
+    </div>
 
-  <script>
+    <div id="status">Cai is Idle</div>
+</div>
+
+<script>
     function updateStatus(text) {
-      document.getElementById("status").innerText = "Status: " + text;
+        const statusEl = document.getElementById("status");
+        const iconEl = document.getElementById("statusIcon");
+        statusEl.innerText = text;
 
-      // Add green background when listening
-      if (text === "Cai is Listening") {
-        document.body.classList.add("listening");
-      } else {
+        // Remove listening class
         document.body.classList.remove("listening");
-      }
+
+        // Update icon and ONLY add green background for listening
+        if (text === "Cai is Listening") {
+            document.body.classList.add("listening");
+            iconEl.textContent = "👂";
+            iconEl.className = "status-icon";
+        } else if (text === "Cai is Speaking") {
+            iconEl.textContent = "💬";
+            iconEl.className = "status-icon";
+        } else if (text === "Cai is Thinking") {
+            iconEl.textContent = "🤔";
+            iconEl.className = "status-icon thinking-icon";
+        } else if (text === "Cai is Paused") {
+            iconEl.textContent = "⏸️";
+            iconEl.className = "status-icon";
+        } else if (text === "Cai is Idle") {
+            iconEl.textContent = "💤";
+            iconEl.className = "status-icon";
+        } else if (text === "Cai is Starting") {
+            iconEl.textContent = "⚡";
+            iconEl.className = "status-icon";
+        } else if (text === "Cai is Stopping") {
+            iconEl.textContent = "👋";
+            iconEl.className = "status-icon";
+        }
     }
-  </script>
+</script>
 
 </body>
 </html>

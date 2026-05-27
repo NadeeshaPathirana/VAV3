@@ -113,8 +113,8 @@ class AIVA_Chroma_2:
         try:
             reader = SimpleDirectoryReader(
                 input_files=[
-                            r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_file.txt",
-                             r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_personality_file.txt",
+                            r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\p2_sample_profile.txt",
+                             # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_personality_file.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV2\rag\profile\older_adults_general_behaviour.txt" #removed due to token limit
@@ -300,7 +300,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
                   
         CRITICAL RESPONSE LENGTH RULE: Your responses MUST be exactly 2-3 sentences, maximum 25 words total. Never exceed 3 sentences under any circumstances. Keep it conversational and brief.
 
-        Do not refer to the user in the third person. Ex: Do not say 'her' interests. Say, your interests instead when talking to the user.
+        Always speak directly to the user using "you" and "your". Never refer to the user in third person using "they", "their", "he", "she", or their name as if talking about them. The user is the person you are speaking with right now.
         You must not ask more than one question at a time. Do not discuss or combine multiple topics in a single message. Keep all questions and responses simple and focused.
         Answer to every question user ask. 
         If the user's message seems unclear, nonsensical, or unrelated to the conversation, always respond with "I did not get that. Could you please repeat?" and nothing else.

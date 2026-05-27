@@ -6,9 +6,11 @@ import time
 from tts import google_voice_service as vsg
 
 client = Speechify(
-    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzY4NzIwMzIsImlzcyI6InNwZWVjaGlmeS1hcGkiLCJzY29wZSI6ImF1ZGlvOmFsbCB2b2ljZXM6cmVhZCIsInN1YiI6IjR3aFJTT1cybEhOMTJTQjdxYkQ1OWhUelJ2ZjEifQ.GqZQWMfgs1Hhj3ld1ugdE5wOdRg7y_mqpi3UX0W6_b4",
+    token="9dtmOZYaIXtlI1AvT9v6CQ1DTdSxKkj1Tilk9kjVdN0=",
 ) # token expires in 1h
-
+# client = Speechify(
+#     api_key="9dtmOZYaIXtlI1AvT9v6CQ1DTdSxKkj1Tilk9kjVdN0="
+# )
 
 def get_emotion(emotion):
     if emotion == 'Happiness':

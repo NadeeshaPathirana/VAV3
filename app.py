@@ -16,6 +16,8 @@ from emotion_recognition.SpeechEmotionRecognizer import SpeechEmotionRecognizer
 from conversation_logger import conv_logger, listener
 
 from tts import speechify_voice_service as vs
+# from tts import google_voice_service as vsg
+
 # from tts import coqui_voice_service as vs
 from rag.AIVA_Chroma_2 import AIVA_Chroma_2
 ai_assistant = AIVA_Chroma_2()
@@ -185,7 +187,9 @@ def assistant_loop():
         conv_logger.info(f"CAI    | {response}")
 
         stream.stop_stream()
+        update_ui_status("Cai is Speaking")
         vs.play_text_to_speech(response, "Neutral")
+        # vsg.play_text_to_speech(response)
         stream.start_stream()
 
         # === MAIN CONVERSATION LOOP ===
@@ -230,8 +234,8 @@ def assistant_loop():
 
             update_ui_status("Cai is Thinking")
 
-            emotion = recognizer_original.predict_emotion("full_audio.wav")
-            print(f"Predicted Emotion by Original SER: {emotion}")
+            # emotion = recognizer_original.predict_emotion("full_audio.wav")
+            # print(f"Predicted Emotion by Original SER: {emotion}")
             emotion = recognizer.predict_emotion("full_audio.wav")
             print(f"Predicted Emotion: {emotion}")
 
@@ -245,14 +249,16 @@ def assistant_loop():
             if not transcription.strip():
                 continue
 
-            update_ui_status("Cai is Speaking")
+
             response = ai_assistant.interact_with_llm(transcription, emotion)
             response = clean_response(response, context="conversation")
 
             print("CAI: ", response)
             conv_logger.info(f"CAI    | {response}")
             stream.stop_stream()
+            update_ui_status("Cai is Speaking")
             vs.play_text_to_speech(response, "Neutral")
+            # vsg.play_text_to_speech(response)
             stream.start_stream()
 
         # === CLEANUP SESSION ===
