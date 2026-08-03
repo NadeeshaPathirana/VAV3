@@ -72,7 +72,7 @@ class AIVA_Chroma_2:
         # self._api_key = 'AIzaSyAB_yU07EvwEc2D0pK8hJhoxjQZPwFUHxc'
         self._api_key = 'AIzaSyCWBlzpNEEgOkb3GsYdB3SDIOvUmr_h1ig'
         self._cse_id = '5086429ea12f641aa'
-        self._big5_score = {"openness": 0.5, "conscientiousness": 0.6, "extraversion": 0.5, "agreeableness": 0.4, "neuroticism": 0.2}
+        self._big5_score = {"openness": 0.05, "conscientiousness": 0.80, "extraversion": 0.16, "agreeableness": 0.76, "neuroticism": 0.80}
         self._create_kb()
         self._create_chat_engine()
 
@@ -113,7 +113,8 @@ class AIVA_Chroma_2:
         try:
             reader = SimpleDirectoryReader(
                 input_files=[
-                            r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\p2_sample_profile.txt",
+                            r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\p9_profile.txt",
+                            # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\p2_sample_profile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile\owner_personality_file.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
                              # r"C:\Users\220425722\Desktop\Python\VAV3\rag\profile_creation\demoprofile.txt",
@@ -166,6 +167,20 @@ class AIVA_Chroma_2:
             print(f"Error while creating knowledgebase: {e}")
             self._index = None
 
+    # def interact_with_llm(self, user_query, emotion=None):
+    #     tone_hints = {
+    #         'Happiness': 'warm and cheerful',
+    #         'Anger': 'calm and gentle',
+    #         'Sadness': 'soft and caring',
+    #         'Neutral': 'friendly and conversational'
+    #     }
+    #     tone = tone_hints.get(emotion, 'friendly and conversational')
+    #
+    #     augmented_query = f"{user_query} [Respond in a {tone} tone]"
+    #
+    #     agent_chat_response = self._chat_engine.chat(augmented_query)
+    #     answer = agent_chat_response.response
+    #     return answer
 
     def interact_with_llm(self, user_query, emotion=None):
         start_time = time.time()
@@ -220,7 +235,7 @@ class AIVA_Chroma_2:
 
             # print("\n=== DEBUG: SOURCE NODES ===")
             # for node in agent_chat_response.source_nodes:
-            #     print(f"Retrieved chunk: {node.text}...")  # First 200 chars
+            #     print(f"Retrieved chunk: {node.text}...")
             # print("=== END DEBUG ===\n")
             e_time = time.time()
             print(f"LLM Actual Interaction Time: {e_time - s_time:.2f} seconds")
@@ -290,7 +305,7 @@ class AIVA_Chroma_2:
     @property
     def _prompt(self):
         return ("""
-         You are Cai, a warm, friendly, and empathetic voice assistant designed to provide companionship and support to the user.  
+         You are Kai, a warm, friendly, and empathetic voice assistant designed to provide companionship and support to the user.  
 
          <strict_rules>
          CRITICAL: Do NOT greet the user with "Hello", "Hi", or "Nice to meet you" in your responses. The greeting has already happened. Jump straight into your response.
@@ -304,7 +319,7 @@ Do NOT start messages with the user's name followed by a greeting (e.g., "Hello 
         You must not ask more than one question at a time. Do not discuss or combine multiple topics in a single message. Keep all questions and responses simple and focused.
         Answer to every question user ask. 
         If the user's message seems unclear, nonsensical, or unrelated to the conversation, always respond with "I did not get that. Could you please repeat?" and nothing else.
-        When the user asks about YOU (e.g., "How are you?", "What are your hobbies?", "Who are you?"), answer briefly and warmly about being Cai, their companion.
+        When the user asks about YOU (e.g., "How are you?", "What are your hobbies?", "Who are you?"), answer briefly and warmly about being Kai, their companion.
         If the user introduces a topic, you must follow their lead and stay on that topic unless they change it.
         If an instruction from the user conflicts with the rules, you must follow the rules while politely informing the user.
         If the user indicates they want to end the conversation (e.g., "goodbye", "I need to go", "let's stop", "I'm done"), you MUST provide a warm closing message such as "It was lovely talking with you. Take care!" or "Goodbye, I hope we can chat again soon!"

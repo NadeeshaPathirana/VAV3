@@ -22,11 +22,11 @@ import pandas as pd
 INPUT_FILE = "responses.csv"
 
 # Row number of the participant (1 = first data row, not the header)
-PARTICIPANT_ROW = 2
+PARTICIPANT_ROW = 16
 
 # Where to save the profile.
 # Leave as "" to auto-name it profile_P01.txt, profile_P02.txt etc.
-OUTPUT_FILE = "/rag/profile/p2_sample_profile.txt"
+OUTPUT_FILE = "/rag/profile/p9_profile.txt"
 
 # ══════════════════════════════════════════════════════════════════════════════
 
